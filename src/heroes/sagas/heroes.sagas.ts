@@ -4,7 +4,7 @@ import * as clc from 'cli-color';
 import { Observable } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { DropAncientItemCommand } from '../commands/impl/drop-ancient-item.command';
-import { HeroKilledDragonEvent } from '../events/impl/hero-killed-dragon.event';
+import { HeroKilledDragonEvent, HeroKilledDragonEvent2 } from '../events/impl/hero-killed-dragon.event';
 
 const itemId = '0';
 
@@ -17,9 +17,22 @@ export class HeroesGameSagas {
         ofType(HeroKilledDragonEvent),
         delay(1000),
         map(event => {
-          console.log(clc.redBright('Inside [HeroesGameSagas] Saga'));
+          console.log(clc.redBright('Inside [HeroesGameSagas] Saga \n'));
           return new DropAncientItemCommand(event.heroId, itemId);
         }),
-      );
+      )
+  }
+
+  @Saga()
+  dragonKilled2 = (events$: Observable<any>): Observable<ICommand> => {
+    return events$
+      .pipe(
+        ofType(HeroKilledDragonEvent2),
+        delay(1000),
+        map(event => {
+          console.log(clc.redBright('\nInside [HeroesGameSagas] Saga 2'));
+          return new DropAncientItemCommand(event.heroId, itemId);
+        }),
+      )
   }
 }

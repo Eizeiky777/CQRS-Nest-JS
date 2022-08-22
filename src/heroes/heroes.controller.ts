@@ -3,7 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { KillDragonCommand } from './commands/impl/kill-dragon.command';
 import { KillDragonDto } from './interfaces/kill-dragon-dto.interface';
 import { Hero } from './models/hero.model';
-import { GetHeroesQuery } from './queries/impl';
+import { GetHeroesQuery, GetHeroesQuery2 } from './queries/impl';
 
 @Controller('hero')
 export class HeroesGameController {
@@ -20,5 +20,10 @@ export class HeroesGameController {
   @Get()
   async findAll(): Promise<Hero[]> {
     return this.queryBus.execute(new GetHeroesQuery());
+  }
+
+  @Get('test/query-handler')
+  async findAll2(): Promise<Hero[]> {
+    return this.queryBus.execute(new GetHeroesQuery2());
   }
 }
